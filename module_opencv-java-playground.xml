@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_opencv-java-playground" default="compile.module.opencv-java-playground">
+  <dirname property="module.opencv-java-playground.basedir" file="${ant.file.module_opencv-java-playground}"/>
+  
+  <property name="module.jdk.home.opencv-java-playground" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.opencv-java-playground" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.opencv-java-playground" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.opencv-java-playground" value="-encoding windows-1252 -source 8 ${compiler.args}"/>
+  
+  <property name="opencv-java-playground.output.dir" value="${module.opencv-java-playground.basedir}/out/production/opencv-java-playground"/>
+  <property name="opencv-java-playground.testoutput.dir" value="${module.opencv-java-playground.basedir}/out/test/opencv-java-playground"/>
+  <property name="opencv-java-playground.jar.dir" value="${module.opencv-java-playground.basedir}/build/jar"/>
+
+  <property name="main-class"  value="com.example.simplesample.SimpleSample"/>
+  <property name="output-jar"  value="opencv-playground.jar"/>
+
+  <path id="opencv-java-playground.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="opencv-java-playground.module.production.classpath">
+    <path refid="${module.jdk.classpath.opencv-java-playground}"/>
+    <path refid="library.opencv-2411.classpath"/>
+  </path>
+  
+  <path id="opencv-java-playground.runtime.production.module.classpath">
+    <pathelement location="${opencv-java-playground.output.dir}"/>
+    <path refid="library.opencv-2411.classpath"/>
+  </path>
+  
+  <path id="opencv-java-playground.module.classpath">
+    <path refid="${module.jdk.classpath.opencv-java-playground}"/>
+    <pathelement location="${opencv-java-playground.output.dir}"/>
+    <path refid="library.opencv-2411.classpath"/>
+  </path>
+  
+  <path id="opencv-java-playground.runtime.module.classpath">
+    <pathelement location="${opencv-java-playground.testoutput.dir}"/>
+    <pathelement location="${opencv-java-playground.output.dir}"/>
+    <path refid="library.opencv-2411.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.opencv-java-playground">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.opencv-java-playground">
+    <patternset refid="excluded.from.module.opencv-java-playground"/>
+  </patternset>
+  
+  <path id="opencv-java-playground.module.sourcepath">
+    <dirset dir="${module.opencv-java-playground.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.opencv-java-playground" depends="compile.module.opencv-java-playground.production,compile.module.opencv-java-playground.tests" description="Compile module opencv-java-playground"/>
+  
+  <target name="compile.module.opencv-java-playground.production" description="Compile module opencv-java-playground; production classes">
+    <mkdir dir="${opencv-java-playground.output.dir}"/>
+    <javac destdir="${opencv-java-playground.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.opencv-java-playground}/javac">
+      <compilerarg line="${compiler.args.opencv-java-playground}"/>
+      <bootclasspath refid="opencv-java-playground.module.bootclasspath"/>
+      <classpath refid="opencv-java-playground.module.production.classpath"/>
+      <src refid="opencv-java-playground.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.opencv-java-playground"/>
+    </javac>
+    
+    <copy todir="${opencv-java-playground.output.dir}">
+      <fileset dir="${module.opencv-java-playground.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile.module.opencv-java-playground.jar">
+    <mkdir dir="${opencv-java-playground.jar.dir}"/>
+    <jar destfile="${opencv-java-playground.jar.dir}/${output-jar}" basedir="${opencv-java-playground.output.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile.module.opencv-java-playground.run.production">
+    <java jar="${opencv-java-playground.jar.dir}/${output-jar}" fork="true"/>
+  </target>
+  
+  <target name="compile.module.opencv-java-playground.tests" depends="compile.module.opencv-java-playground.production" description="compile module opencv-java-playground; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.opencv-java-playground" description="cleanup module">
+    <delete dir="${opencv-java-playground.output.dir}"/>
+    <delete dir="${opencv-java-playground.testoutput.dir}"/>
+  </target>
+</project>

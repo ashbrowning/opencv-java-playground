@@ -1,0 +1,8 @@
+package com.example.simplesample;
+
+public class SimpleSample {
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+}
